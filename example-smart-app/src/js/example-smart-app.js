@@ -11,7 +11,6 @@
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
-        var user = smart.user.read();
         var obv = smart.patient.api.fetchAll({
                     type: 'Observation',
                     query: {
@@ -23,9 +22,11 @@
                     }
                   });
 
-        $.when(pt, obv, user).fail(onError);
+        $.when(pt, obv).fail(onError);
 
-        $.when(pt, obv, user).done(function(patient, obv, user) {
+        $.when(pt, obv).done(function(patient, obv) {
+          
+          var personName = smart.tokenResponse.username;
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
 
@@ -44,6 +45,7 @@
           var ldl = byCodes('2089-1');
 
           var p = defaultPatient();
+          p.personName = personName;
           p.identifier = patient.identifier;
           p.birthdate = patient.birthDate;
           p.gender = gender;
@@ -76,6 +78,7 @@
 
   function defaultPatient(){
     return {
+      personName: {value: ''},
       identifier: {value: ''},
       fname: {value: ''},
       lname: {value: ''},
