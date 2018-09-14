@@ -123,6 +123,7 @@
   window.drawVisualization = function(p) {
     $('#holder').show();
     $('#loading').hide();
+    $('#personName').html(p.personName);
     $('#identifier').html(p.identifier);
     $('#fname').html(p.fname);
     $('#lname').html(p.lname);
